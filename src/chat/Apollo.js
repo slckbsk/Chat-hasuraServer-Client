@@ -14,7 +14,7 @@ const httpLink = new HttpLink({
 });
 
 const wsLink = new WebSocketLink({
-  uri: "ws://sefihuom-chat-server.hasura.app/v1/graphql",
+  uri: "wss://sefihuom-chat-server.hasura.app/v1/graphql",
 
   options: {
     reconnect: true,
