@@ -51,7 +51,7 @@ const Messages = ({ user_id, user }) => {
                 background: "white",
               }}
             >
-              {messages_user.user.slice(0, 8).toUpperCase()}
+              {messages_user.user.slice(0, 8)}
             </div>
           )}
           <div
