@@ -23,6 +23,29 @@ export const GET_USERS_SUB = gql`
   }
 `;
 
+
+
+export const DELETE_USERS = gql`
+  mutation DeleteAllUsers {
+    delete_users(where: {}) {
+      returning {
+        user
+      }
+    }
+  }
+`;
+
+export const DELETE_USER = gql`
+  mutation DeleteUser($user_id: Int!) {
+    delete_users_by_pk(user_id: $user_id) {
+      user
+      user_id
+    }
+  }
+`;
+
+
+
 export const USERS_COUNT = gql`
   subscription UserCount {
     users_aggregate {
