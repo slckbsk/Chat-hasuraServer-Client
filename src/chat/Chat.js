@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useMutation } from "@apollo/client";
 import { POST_MESSAGES } from "./queries";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -10,8 +9,8 @@ import Button from "react-bootstrap/Button";
 import Messages from "./ChatContainer";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useSubscription } from "@apollo/client";
-import { GET_USERS_SUB, USERS_COUNT } from "./queries";
+import { useSubscription, useMutation } from "@apollo/client";
+import { GET_USERS_SUB, USERS_COUNT, DELETE_USER } from "./queries";
 import Loading from "./Loading";
 
 const Chat = () => {
@@ -37,6 +36,12 @@ const Chat = () => {
     },
   });
 
+  const [Quit] = useMutation(DELETE_USER, {
+    variables: {
+      user_id: user_id,
+    },
+  });
+
   const { loading, error, data } = useSubscription(GET_USERS_SUB);
   const { data: subscriptionData } = useSubscription(USERS_COUNT);
 
@@ -45,9 +50,9 @@ const Chat = () => {
 
     if (!location.state) {
       console.log("Location state is null or undefined");
-      navigate(`*`);
+      navigate(`/`);
     } else if (subscriptionData && userCount === 0) {
-      navigate(`*`);
+      navigate(`/`);
     } else if (!loading && data && data.users) {
       let matchFound = false;
       let i = 0;
@@ -64,7 +69,7 @@ const Chat = () => {
       }
 
       if (!matchFound) {
-        navigate(`*`);
+        navigate(`/`);
       }
     }
   }, [
@@ -119,6 +124,18 @@ const Chat = () => {
     });
   };
 
+  const onQuit = () => {
+    Quit({
+      variables: state.user_id,
+    });
+
+    stateSet({
+      user: "",
+      user_id: "",
+      content: "",
+    });
+  };
+
   return (
     <Container
       style={{
@@ -158,6 +175,7 @@ const Chat = () => {
           <Form.Label
             style={{
               height: "100%",
+              width: "100%",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
@@ -172,6 +190,14 @@ const Chat = () => {
         </Col>
         <Col sm={8}>
           <Form.Control
+            style={{
+              height: "100%",
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              color: "black",
+            }}
             value={state.content}
             aria-label="Content"
             onChange={(e) =>
@@ -187,16 +213,42 @@ const Chat = () => {
             }}
           />
         </Col>
-        <Col sm={2} style={{ padding: 0 }}>
+        <Col sm={1} style={{ padding: 1 }}>
           <Button
+            style={{
+              height: "100%",
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
+              color: "white",
+            }}
             size="text"
             variant="primary"
-            style={{ width: "100%" }}
             onClick={() => onSend()}
           >
             Send
           </Button>
-        </Col>{" "}
+        </Col>
+        <Col sm={1} style={{ padding: 1 }}>
+          <Button
+            style={{
+              height: "100%",
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
+              color: "white",
+            }}
+            size="text"
+            variant="primary"
+            onClick={() => onQuit()}
+          >
+            Quit
+          </Button>
+        </Col>
       </Row>
     </Container>
   );
