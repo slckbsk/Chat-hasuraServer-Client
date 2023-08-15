@@ -15,7 +15,6 @@ const httpLink = new HttpLink({
 
 const wsLink = new WebSocketLink({
   uri: "wss://sefihuom-chat-server.hasura.app/v1/graphql",
-
   options: {
     reconnect: true,
     connectionParams: {
@@ -40,10 +39,26 @@ const splitLink = split(
 
 const client = new ApolloClient({
   link: splitLink,
-
   cache: new InMemoryCache(),
 });
 
+const scheduleDataDeletion = () => {
+  setTimeout(() => {
+    client
+      .mutate({
+        mutation: DELETE_USERS,
+      })
+      .then((result) => {
+        console.log("Data deletion completed:", result);
+      })
+      .catch((error) => {
+        console.error("Error deleting data:", error);
+      });
+    scheduleDataDeletion();
+  }, 24 * 60 * 60 * 1000); 
+};
 
+
+scheduleDataDeletion();
 
 export default client;
