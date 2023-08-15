@@ -121,13 +121,11 @@ const Login = () => {
             padding: 20,
             background: "white",
             height: 300,
-
             borderRadius: "1em",
             border: "1px solid Black",
             margin: 20,
           }}
         >
-          <Form.Label>ONLİNE USER LİST</Form.Label>
           <UsersList />
         </Col>
       </Row>
