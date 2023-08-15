@@ -2,9 +2,9 @@ import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { split, HttpLink } from "@apollo/client";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "@apollo/client/link/ws";
+import { DELETE_USERS } from "./queries";
 
 const admin = process.env.REACT_APP_API_KEY;
-
 
 const httpLink = new HttpLink({
   uri: "https://sefihuom-chat-server.hasura.app/v1/graphql",
@@ -42,6 +42,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+
 const scheduleDataDeletion = () => {
   setTimeout(() => {
     client
@@ -54,8 +55,10 @@ const scheduleDataDeletion = () => {
       .catch((error) => {
         console.error("Error deleting data:", error);
       });
+
+
     scheduleDataDeletion();
-  }, 24 * 60 * 60 * 1000); 
+  }, 12 * 60 * 60 * 1000); 
 };
 
 
