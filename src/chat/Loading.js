@@ -15,7 +15,7 @@ function Loading() {
              textAlign: "center",
              fontSize: "20px",
              background: "white",
-             height: 200,
+             height: 250,
              maxWidth: "100%",
              borderRadius: "1em",
              border: "1px solid Black",
