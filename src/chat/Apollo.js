@@ -4,6 +4,30 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { DELETE_USERS } from "./queries";
 
+const scheduleDataDeletion = () => {
+  setTimeout(() => {
+    client
+      .mutate({
+        mutation: DELETE_USERS,
+      })
+      .then((result) => {
+        console.log("Data deletion completed:", result);
+      })
+      .catch((error) => {
+        console.error("Error deleting data:", error);
+      });
+
+
+    scheduleDataDeletion();
+  }, 12 * 60 * 60 * 1000); 
+};
+
+
+scheduleDataDeletion();
+
+
+
+
 const admin = process.env.REACT_APP_API_KEY;
 
 const httpLink = new HttpLink({
