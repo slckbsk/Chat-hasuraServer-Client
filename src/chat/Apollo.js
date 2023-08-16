@@ -43,25 +43,4 @@ const client = new ApolloClient({
 });
 
 
-const scheduleDataDeletion = () => {
-  setTimeout(() => {
-    client
-      .mutate({
-        mutation: DELETE_USERS,
-      })
-      .then((result) => {
-        console.log("Data deletion completed:", result);
-      })
-      .catch((error) => {
-        console.error("Error deleting data:", error);
-      });
-
-
-    scheduleDataDeletion();
-  }, 12 * 60 * 60 * 1000); 
-};
-
-
-scheduleDataDeletion();
-
 export default client;
